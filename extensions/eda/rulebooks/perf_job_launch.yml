@@ -1,0 +1,17 @@
+---
+- name: Basic run with custom host limit
+  hosts: all
+  sources:
+    - ansible.eda.range:
+        limit: 10
+        delay: 0.5
+
+  rules:
+    - name: Run basic with custom host limit
+      condition: event.user == "Rick" and event.universe == "C-137"
+      actions:
+        - run_job_template:
+            organization: {{ org_name | default('Default') }}
+            name: Launch_by_eda
+            job_args:
+              limit: "{{ event.hosts }}"
